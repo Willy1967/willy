@@ -24,12 +24,12 @@
          C:\Program Files\Siemens\Automation\Portal V20\PublicAPI\V20\Siemens.Engineering.dll -->
     <Reference Include="Siemens.Engineering">
       <HintPath>$(TiaPortalInstallDir)\PublicAPI\$(TiaPortalApiVersion)\Siemens.Engineering.dll</HintPath>
-      <Private>False</Private>
+      <Private>True</Private>
       <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="Siemens.Engineering.Hmi">
       <HintPath>$(TiaPortalInstallDir)\PublicAPI\$(TiaPortalApiVersion)\Siemens.Engineering.Hmi.dll</HintPath>
-      <Private>False</Private>
+      <Private>True</Private>
       <SpecificVersion>False</SpecificVersion>
     </Reference>
   </ItemGroup>
