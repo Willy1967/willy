@@ -51,6 +51,13 @@ namespace TiaOpennessBuilder.Builders
 
         public static void EnsureTankScreens(dynamic hmiTarget, ProjectConfig config)
         {
+            Console.WriteLine($"HMI software runtime type: {((object)hmiTarget).GetType().FullName}");
+            Console.WriteLine("Public properties on that type:");
+            foreach (var prop in ((object)hmiTarget).GetType().GetProperties())
+            {
+                Console.WriteLine($"  - {prop.PropertyType.Name} {prop.Name}");
+            }
+
             dynamic screens = hmiTarget.ScreenFolder.Screens;
 
             foreach (var tank in config.Tanks)
