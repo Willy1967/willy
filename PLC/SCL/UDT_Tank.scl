@@ -1,0 +1,15 @@
+TYPE "UDT_Tank"
+VERSION : 0.1
+STRUCT
+    TankName      : String[32];
+    SoundingRaw   : Real;                       // raw sensorwaarde (bv. 4..20mA of mm)
+    SoundingCm    : Real;                       // geschaalde sounding in centimeters
+    TrimAngle     : Real;                       // graden, +/-
+    LevelPercent  : Real;
+    VolumeLiters  : Real;
+    TrimOffset    : Real;                       // opgebouwde sensor-trim offset (FB_Sensor_Trim)
+    SensorFailure : Bool;
+    // 1=HH  2=H  3=L  4=LL  5=SensorFailure  6=Spare1  7=Spare2
+    Alarms        : Array[1..7] of "UDT_Alarm";
+END_STRUCT
+END_TYPE

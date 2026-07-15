@@ -1,0 +1,12 @@
+DATA_BLOCK "DB_Tanks"
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+NON_RETAIN
+
+VAR
+    Tank : Array[1..6] of "UDT_Tank";
+END_VAR
+
+BEGIN
+
+END_DATA_BLOCK

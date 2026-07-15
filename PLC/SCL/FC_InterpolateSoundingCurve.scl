@@ -1,0 +1,41 @@
+FUNCTION "FC_InterpolateSoundingCurve" : Real
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+
+VAR_INPUT
+    Curve      : Array[1..40] of "udtCurvePoint";
+    PointCount : Int;
+    SoundingCm : Real;
+END_VAR
+
+VAR
+    i : Int;
+    t : Real;
+END_VAR
+
+BEGIN
+    IF #PointCount < 2 THEN
+        "FC_InterpolateSoundingCurve" := 0.0;
+        RETURN;
+    END_IF;
+
+    IF #SoundingCm <= #Curve[1].SoundingCm THEN
+        "FC_InterpolateSoundingCurve" := #Curve[1].VolumeLiters;
+        RETURN;
+    END_IF;
+
+    IF #SoundingCm >= #Curve[#PointCount].SoundingCm THEN
+        "FC_InterpolateSoundingCurve" := #Curve[#PointCount].VolumeLiters;
+        RETURN;
+    END_IF;
+
+    FOR #i := 1 TO #PointCount - 1 DO
+        IF (#SoundingCm >= #Curve[#i].SoundingCm) AND (#SoundingCm <= #Curve[#i + 1].SoundingCm) THEN
+            #t := (#SoundingCm - #Curve[#i].SoundingCm) / (#Curve[#i + 1].SoundingCm - #Curve[#i].SoundingCm);
+            "FC_InterpolateSoundingCurve" := #Curve[#i].VolumeLiters + #t * (#Curve[#i + 1].VolumeLiters - #Curve[#i].VolumeLiters);
+            RETURN;
+        END_IF;
+    END_FOR;
+
+    "FC_InterpolateSoundingCurve" := 0.0;
+END_FUNCTION

@@ -1,0 +1,47 @@
+FUNCTION_BLOCK "FB_Tank_Alarm_Manager"
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+
+VAR_INPUT
+    LevelPercent  : Real;
+    SensorFailure : Bool;
+    TankAckCmd    : Bool;         // accept-niveau: per tankpagina
+    GlobalAckCmd  : Bool;         // accept-niveau: globaal
+END_VAR
+
+VAR_IN_OUT
+    Tank : "UDT_Tank";
+END_VAR
+
+VAR
+    AlarmChannel : Array[1..7] of "FB_Alarm";     // multi-instance, 1 per alarmtype
+    i            : Int;
+    ProcessValue : Real;
+END_VAR
+
+BEGIN
+    // Kanaalindeling: 1=HH 2=H 3=L 4=LL 5=SensorFailure 6=Spare1 7=Spare2
+    FOR #i := 1 TO 7 DO
+        IF #i = 5 THEN
+            #ProcessValue := BOOL_TO_REAL(#SensorFailure);
+        ELSE
+            #ProcessValue := #LevelPercent;
+        END_IF;
+
+        #AlarmChannel[#i](ProcessValue  := #ProcessValue,
+                           Setpoint     := #Tank.Alarms[#i].Setpoint,
+                           Hysteresis   := #Tank.Alarms[#i].Hysteresis,
+                           DelayTime    := #Tank.Alarms[#i].DelayTime,
+                           Inhibit      := #Tank.Alarms[#i].Inhibited OR NOT #Tank.Alarms[#i].Enabled,
+                           AckCmd       := #Tank.Alarms[#i].AckCmd,
+                           GlobalAckCmd := #TankAckCmd OR #GlobalAckCmd,
+                           IsHighAlarm  := #Tank.Alarms[#i].IsHighAlarm,
+                           Active       => #Tank.Alarms[#i].Active,
+                           Acknowledged => #Tank.Alarms[#i].Acknowledged,
+                           RawCondition => #Tank.Alarms[#i].RawCondition);
+
+        // AckCmd is edge-getriggerd in FB_Alarm; hier direct weer vrijgeven
+        // zodat de HMI enkel een korte puls hoeft te zetten.
+        #Tank.Alarms[#i].AckCmd := FALSE;
+    END_FOR;
+END_FUNCTION_BLOCK

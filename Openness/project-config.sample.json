@@ -1,0 +1,109 @@
+{
+  "CreateNewProject": true,
+  "TiaProjectDirectory": "C:\\TIA_Projects\\TankSystem",
+  "TiaProjectName": "TankSystem",
+  "TiaProjectPath": "C:\\TIA_Projects\\TankSystem\\TankSystem.ap20",
+  "WithUserInterface": true,
+
+  "PlcOrderNumber": "OrderNumber:6ES7 515-2AM02-0AB0/V3.0",
+  "PlcDeviceName": "PLC_1",
+
+  "BuildHmiScreens": true,
+  "HmiOrderNumber": "OrderNumber:6AV2 124-0QC02-0AX0",
+  "HmiDeviceName": "HMI_1",
+
+  "SclSourceDirectory": "..\\..\\PLC\\SCL",
+  "SclImportOrder": [
+    "UDT_Alarm.scl",
+    "UDT_Tank.scl",
+    "udtCurvePoint.scl",
+    "udtTrimCurve.scl",
+    "udtTankTable.scl",
+    "FC_InterpolateSoundingCurve.scl",
+    "FB_Alarm.scl",
+    "FB_Tank_Alarm_Manager.scl",
+    "FB_Sensor_Trim.scl",
+    "FB_TankInterpolation.scl"
+  ],
+
+  "Tanks": [
+    {
+      "Index": 1,
+      "Name": "MGO_Port",
+      "SoundingRawAddress": "%IW100",
+      "RawMin": 4.0, "RawMax": 20.0, "CmAtRawMin": 0.0, "CmAtRawMax": 250.0,
+      "Alarms": [
+        { "ChannelIndex": 1, "Setpoint": 95.0, "Hysteresis": 1.0, "DelayTime": "T#3S", "IsHighAlarm": true },
+        { "ChannelIndex": 2, "Setpoint": 85.0, "Hysteresis": 1.0, "DelayTime": "T#3S", "IsHighAlarm": true },
+        { "ChannelIndex": 3, "Setpoint": 15.0, "Hysteresis": 1.0, "DelayTime": "T#3S", "IsHighAlarm": false },
+        { "ChannelIndex": 4, "Setpoint": 5.0,  "Hysteresis": 1.0, "DelayTime": "T#3S", "IsHighAlarm": false },
+        { "ChannelIndex": 5, "Setpoint": 0.5,  "Hysteresis": 0.1, "DelayTime": "T#10S", "IsHighAlarm": true }
+      ]
+    },
+    {
+      "Index": 2,
+      "Name": "MGO_Stbd",
+      "SoundingRawAddress": "%IW102",
+      "RawMin": 4.0, "RawMax": 20.0, "CmAtRawMin": 0.0, "CmAtRawMax": 250.0,
+      "Alarms": [
+        { "ChannelIndex": 1, "Setpoint": 95.0, "Hysteresis": 1.0, "DelayTime": "T#3S", "IsHighAlarm": true },
+        { "ChannelIndex": 2, "Setpoint": 85.0, "Hysteresis": 1.0, "DelayTime": "T#3S", "IsHighAlarm": true },
+        { "ChannelIndex": 3, "Setpoint": 15.0, "Hysteresis": 1.0, "DelayTime": "T#3S", "IsHighAlarm": false },
+        { "ChannelIndex": 4, "Setpoint": 5.0,  "Hysteresis": 1.0, "DelayTime": "T#3S", "IsHighAlarm": false },
+        { "ChannelIndex": 5, "Setpoint": 0.5,  "Hysteresis": 0.1, "DelayTime": "T#10S", "IsHighAlarm": true }
+      ]
+    },
+    {
+      "Index": 3,
+      "Name": "MGO_Day",
+      "SoundingRawAddress": "%IW104",
+      "RawMin": 4.0, "RawMax": 20.0, "CmAtRawMin": 0.0, "CmAtRawMax": 150.0,
+      "Alarms": [
+        { "ChannelIndex": 1, "Setpoint": 95.0, "Hysteresis": 1.0, "DelayTime": "T#3S", "IsHighAlarm": true },
+        { "ChannelIndex": 2, "Setpoint": 85.0, "Hysteresis": 1.0, "DelayTime": "T#3S", "IsHighAlarm": true },
+        { "ChannelIndex": 3, "Setpoint": 20.0, "Hysteresis": 1.0, "DelayTime": "T#3S", "IsHighAlarm": false },
+        { "ChannelIndex": 4, "Setpoint": 10.0, "Hysteresis": 1.0, "DelayTime": "T#3S", "IsHighAlarm": false },
+        { "ChannelIndex": 5, "Setpoint": 0.5,  "Hysteresis": 0.1, "DelayTime": "T#10S", "IsHighAlarm": true }
+      ]
+    },
+    {
+      "Index": 4,
+      "Name": "FW_Port",
+      "SoundingRawAddress": "%IW106",
+      "RawMin": 4.0, "RawMax": 20.0, "CmAtRawMin": 0.0, "CmAtRawMax": 200.0,
+      "Alarms": [
+        { "ChannelIndex": 1, "Setpoint": 95.0, "Hysteresis": 1.0, "DelayTime": "T#3S", "IsHighAlarm": true },
+        { "ChannelIndex": 2, "Setpoint": 85.0, "Hysteresis": 1.0, "DelayTime": "T#3S", "IsHighAlarm": true },
+        { "ChannelIndex": 3, "Setpoint": 15.0, "Hysteresis": 1.0, "DelayTime": "T#3S", "IsHighAlarm": false },
+        { "ChannelIndex": 4, "Setpoint": 5.0,  "Hysteresis": 1.0, "DelayTime": "T#3S", "IsHighAlarm": false },
+        { "ChannelIndex": 5, "Setpoint": 0.5,  "Hysteresis": 0.1, "DelayTime": "T#10S", "IsHighAlarm": true }
+      ]
+    },
+    {
+      "Index": 5,
+      "Name": "FW_Stbd",
+      "SoundingRawAddress": "%IW108",
+      "RawMin": 4.0, "RawMax": 20.0, "CmAtRawMin": 0.0, "CmAtRawMax": 200.0,
+      "Alarms": [
+        { "ChannelIndex": 1, "Setpoint": 95.0, "Hysteresis": 1.0, "DelayTime": "T#3S", "IsHighAlarm": true },
+        { "ChannelIndex": 2, "Setpoint": 85.0, "Hysteresis": 1.0, "DelayTime": "T#3S", "IsHighAlarm": true },
+        { "ChannelIndex": 3, "Setpoint": 15.0, "Hysteresis": 1.0, "DelayTime": "T#3S", "IsHighAlarm": false },
+        { "ChannelIndex": 4, "Setpoint": 5.0,  "Hysteresis": 1.0, "DelayTime": "T#3S", "IsHighAlarm": false },
+        { "ChannelIndex": 5, "Setpoint": 0.5,  "Hysteresis": 0.1, "DelayTime": "T#10S", "IsHighAlarm": true }
+      ]
+    },
+    {
+      "Index": 6,
+      "Name": "FW_Hydrophore",
+      "SoundingRawAddress": "%IW110",
+      "RawMin": 4.0, "RawMax": 20.0, "CmAtRawMin": 0.0, "CmAtRawMax": 100.0,
+      "Alarms": [
+        { "ChannelIndex": 1, "Setpoint": 95.0, "Hysteresis": 1.0, "DelayTime": "T#3S", "IsHighAlarm": true },
+        { "ChannelIndex": 2, "Setpoint": 85.0, "Hysteresis": 1.0, "DelayTime": "T#3S", "IsHighAlarm": true },
+        { "ChannelIndex": 3, "Setpoint": 20.0, "Hysteresis": 1.0, "DelayTime": "T#3S", "IsHighAlarm": false },
+        { "ChannelIndex": 4, "Setpoint": 10.0, "Hysteresis": 1.0, "DelayTime": "T#3S", "IsHighAlarm": false },
+        { "ChannelIndex": 5, "Setpoint": 0.5,  "Hysteresis": 0.1, "DelayTime": "T#10S", "IsHighAlarm": true }
+      ]
+    }
+  ]
+}

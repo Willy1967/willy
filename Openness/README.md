@@ -1,0 +1,80 @@
+# TiaOpennessBuilder
+
+C#-consoletoepassing die het TIA Portal V20-project automatisch opbouwt via de
+**Openness API**: PLC-software openen/aanmaken, de SCL-bronnen in `PLC/SCL`
+importeren ("Generate blocks from source"), `DB_Tanks` vullen vanuit config,
+een tag-tabel aanmaken en (best-effort) lege HMI-schermen scaffolden.
+
+## Belangrijk: lokaal uitvoeren tegen TIA Portal
+
+Dit script moet **lokaal** draaien op een machine met TIA Portal V20 +
+Openness-optie geïnstalleerd. Er is vanuit deze omgeving geen netwerktoegang
+tot TIA Portal, dus dit is niet hier te testen — controleer de API-aanroepen
+tegen de daadwerkelijke `Siemens.Engineering.dll` (via IntelliSense/Object
+Browser in Visual Studio) voordat je het script op een productieproject
+loslaat, en run eerst tegen een wegwerp-testproject.
+
+## Vereisten
+
+- TIA Portal V20 met de Openness-optie geïnstalleerd.
+- .NET Framework 4.8 SDK / Visual Studio 2022 (of `dotnet build` met de juiste
+  workload) — target platform **x64**, moet overeenkomen met TIA Portal.
+- De Openness-DLL's worden **niet** meegeleverd in deze repo (Siemens-eigendom).
+  Ze staan normaal op:
+  `C:\Program Files\Siemens\Automation\Portal V20\PublicAPI\V20\Siemens.Engineering.dll`
+  Wijkt jouw installatiepad af, bouw dan met:
+  ```
+  dotnet build -p:TiaPortalInstallDir="D:\Siemens\Portal V20"
+  ```
+- Windows: registreer/vertrouw de Openness-toegang bij de eerste run
+  (TIA Portal vraagt hiervoor een bevestiging als je met UI draait).
+
+## Config
+
+Kopieer `project-config.sample.json` en pas aan:
+
+- `CreateNewProject` / `TiaProjectDirectory` / `TiaProjectName` voor een
+  nieuw project, of `TiaProjectPath` om een bestaand `.ap20`-project te openen.
+- `PlcOrderNumber` — exacte catalogusstring van je CPU, bv.
+  `"OrderNumber:6ES7 515-2AM02-0AB0/V3.0"`. Zoek de exacte string op via
+  Hardwarecatalogus in TIA Portal (rechtsklik → "Properties" op een CPU) of
+  in de HSP-documentatie.
+- `HmiOrderNumber` — idem voor het HMI-paneel (TP1200 Comfort of Unified).
+- `SclSourceDirectory` + `SclImportOrder` — de SCL-bestanden uit `PLC/SCL`
+  die in deze volgorde geïmporteerd worden (UDT's vóór de FB's die ze
+  gebruiken). `DB_Tanks` staat hier bewust *niet* in: die wordt dynamisch
+  gegenereerd uit de `Tanks`-sectie van de config en apart geïmporteerd
+  (zie `TankDbGenerator`).
+- `Tanks` — 6 tanks met sounding-scaling (`RawMin/RawMax` → `CmAtRawMin/CmAtRawMax`,
+  gebruikt door `FB_TankInterpolation`) en per-tank alarm-setpoints
+  (kanaal 1..7 = HH, H, L, LL, SensorFailure, Spare1, Spare2).
+
+## Runnen
+
+```
+cd Openness/src/TiaOpennessBuilder
+dotnet build -c Release
+dotnet bin\Release\net48\TiaOpennessBuilder.dll ..\..\project-config.json
+```
+
+Het script is idempotent voor de PLC-kant: opnieuw draaien importeert de
+bronnen opnieuw (bestaande external sources met dezelfde naam worden eerst
+verwijderd) en slaat het project op.
+
+## Bekende beperkingen
+
+- **HMI-schermen**: de publieke Openness API biedt voor WinCC Comfort/Advanced
+  nauwelijks toegang tot losse grafische objecten (IO-fields, de
+  tankniveau-gauge, HH/H/L/LL-markers, faceplate-instanties). `HmiScreenBuilder`
+  maakt daarom alleen lege schermen per tank aan (`Tank1_Overview`, …). Bouw
+  de daadwerkelijke schermindeling één keer met de hand (of als
+  library-mastercopy) en kopieer die per tank, of breid deze klasse uit nadat
+  je hebt geverifieerd welke `Hmi.Screen`-APIs jouw Openness-versie echt
+  ondersteunt.
+- **Trim-interpolatie**: `FB_TankInterpolation` interpoleert momenteel alleen
+  op de nul-trim curve; de blend tussen de dichtstbijzijnde `TrimCurves` op
+  basis van `TrimAngleDeg` staat als TODO in `PLC/SCL/FB_TankInterpolation.scl`.
+- **API-versieverschillen**: methodesignaturen (bv. `ExternalSource.Delete()`,
+  `GenerateBlocksFromSource()`) kunnen licht verschillen tussen Openness
+  V19/V20. Bouw eerst met de daadwerkelijke DLL's als referentie en corrigeer
+  waar nodig.

@@ -1,0 +1,44 @@
+FUNCTION_BLOCK "FB_TankInterpolation"
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+
+VAR_INPUT
+    SoundingRaw  : Real;             // raw sensorwaarde (bv. 4..20mA, of mm)
+    RawMin       : Real := 4.0;
+    RawMax       : Real := 20.0;
+    CmAtRawMin   : Real := 0.0;
+    CmAtRawMax   : Real := 250.0;
+    TrimAngleDeg : Real;
+    TankTable    : "udtTankTable";
+END_VAR
+
+VAR_OUTPUT
+    SoundingCm   : Real;
+    VolumeLiters : Real;
+    OutOfRange   : Bool;
+END_VAR
+
+BEGIN
+    // Fix: raw sounding-waarde eerst naar centimeters schalen vóórdat er
+    // geïnterpoleerd wordt (was eerder niet gebeurd, waardoor de FB rechtstreeks
+    // op de ruwe sensorwaarde interpoleerde in plaats van op centimeters).
+    IF #RawMax <> #RawMin THEN
+        #SoundingCm := #CmAtRawMin + (#SoundingRaw - #RawMin) / (#RawMax - #RawMin) * (#CmAtRawMax - #CmAtRawMin);
+    ELSE
+        #SoundingCm := 0.0;
+    END_IF;
+
+    IF #SoundingCm < 0.0 THEN
+        #SoundingCm := 0.0;
+        #OutOfRange := TRUE;
+    ELSE
+        #OutOfRange := FALSE;
+    END_IF;
+
+    // Interpolatie op de nul-trim sounding-curve.
+    // TODO: interpoleren tussen de twee dichtstbijzijnde TrimCurves op basis
+    // van TrimAngleDeg en blenden met dit resultaat (extension point).
+    #VolumeLiters := "FC_InterpolateSoundingCurve"(Curve      := #TankTable.ZeroTrimCurve,
+                                                     PointCount := #TankTable.ZeroTrimCount,
+                                                     SoundingCm := #SoundingCm);
+END_FUNCTION_BLOCK

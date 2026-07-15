@@ -1,0 +1,7 @@
+TYPE "udtCurvePoint"
+VERSION : 0.1
+STRUCT
+    SoundingCm   : Real;
+    VolumeLiters : Real;
+END_STRUCT
+END_TYPE

@@ -1,0 +1,16 @@
+TYPE "UDT_Alarm"
+VERSION : 0.1
+STRUCT
+    Enabled      : Bool;                  // alarmkanaal actief voor deze tank
+    Inhibited    : Bool;                  // operator-inhibit, onderdrukt evaluatie
+    IsHighAlarm  : Bool := TRUE;          // TRUE: alarm bij >= Setpoint, FALSE: bij <= Setpoint
+    Active       : Bool;                  // conditie waar, ná delay
+    RawCondition : Bool;                  // conditie waar, vóór delay (voor TON-ingang)
+    AckCmd       : Bool;                  // operator accept-commando (per alarm)
+    Acknowledged : Bool;                  // huidige accept-status
+    DelayTime    : Time := T#3S;
+    Setpoint     : Real;
+    Hysteresis   : Real := 0.5;
+    AlarmText    : String[80];
+END_STRUCT
+END_TYPE

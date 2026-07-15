@@ -1,0 +1,11 @@
+# .NET / Visual Studio
+bin/
+obj/
+*.user
+.vs/
+
+# TIA Portal local project output (generated locally, not source)
+*.ap20
+*.ap19
+*.als20
+*.als19

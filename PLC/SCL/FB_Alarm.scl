@@ -1,0 +1,61 @@
+FUNCTION_BLOCK "FB_Alarm"
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+
+VAR_INPUT
+    ProcessValue  : Real;
+    Setpoint      : Real;
+    Hysteresis    : Real;
+    DelayTime     : Time;
+    Inhibit       : Bool;
+    AckCmd        : Bool;         // per-alarm accept (edge-getriggerd)
+    GlobalAckCmd  : Bool;         // per-tankpagina of globaal accept, al OR-ed door de caller
+    IsHighAlarm   : Bool;         // TRUE: alarm bij ProcessValue >= Setpoint, FALSE: bij <= Setpoint
+END_VAR
+
+VAR_OUTPUT
+    Active        : Bool;
+    Acknowledged   : Bool;
+    RawCondition   : Bool;
+END_VAR
+
+VAR
+    DelayTimer    : TON;
+    AckEdge       : R_TRIG;
+    GlobalAckEdge : R_TRIG;
+    LatchedAck    : Bool;
+END_VAR
+
+BEGIN
+    // Conditie bepalen met hysterese, richting configureerbaar per alarm
+    IF #IsHighAlarm THEN
+        IF #ProcessValue >= #Setpoint THEN
+            #RawCondition := TRUE;
+        ELSIF #ProcessValue <= (#Setpoint - #Hysteresis) THEN
+            #RawCondition := FALSE;
+        END_IF;
+    ELSE
+        IF #ProcessValue <= #Setpoint THEN
+            #RawCondition := TRUE;
+        ELSIF #ProcessValue >= (#Setpoint + #Hysteresis) THEN
+            #RawCondition := FALSE;
+        END_IF;
+    END_IF;
+
+    // TON-delay vóór het alarm actief wordt; IEC_TIMER kan niet in een UDT
+    // staan, vandaar dat de timer hier in de (multi-instance) FB zit.
+    #DelayTimer(IN := #RawCondition AND NOT #Inhibit, PT := #DelayTime);
+    #Active := #DelayTimer.Q AND NOT #Inhibit;
+
+    // Accept-logica: per-alarm accept of via tankpagina/globaal accept (al OR-ed door caller)
+    #AckEdge(CLK := #AckCmd);
+    #GlobalAckEdge(CLK := #GlobalAckCmd);
+
+    IF NOT #Active THEN
+        #LatchedAck := FALSE;
+    ELSIF #AckEdge.Q OR #GlobalAckEdge.Q THEN
+        #LatchedAck := TRUE;
+    END_IF;
+
+    #Acknowledged := #LatchedAck OR NOT #Active;
+END_FUNCTION_BLOCK

@@ -1,0 +1,10 @@
+TYPE "udtTankTable"
+VERSION : 0.1
+STRUCT
+    TankName       : String[32];
+    ZeroTrimCount  : Int;                        // aantal geldige punten in ZeroTrimCurve
+    ZeroTrimCurve  : Array[1..40] of "udtCurvePoint";
+    TrimCurveCount : Int;                         // aantal geldige curves in TrimCurves
+    TrimCurves     : Array[1..10] of "udtTrimCurve";
+END_STRUCT
+END_TYPE

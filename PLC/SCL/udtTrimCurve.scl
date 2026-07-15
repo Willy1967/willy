@@ -1,0 +1,8 @@
+TYPE "udtTrimCurve"
+VERSION : 0.1
+STRUCT
+    TrimAngleDeg : Real;
+    PointCount   : Int;
+    Points       : Array[1..40] of "udtCurvePoint";
+END_STRUCT
+END_TYPE

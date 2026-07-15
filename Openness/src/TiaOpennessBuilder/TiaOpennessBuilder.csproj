@@ -1,0 +1,51 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <!-- TIA Portal Openness targets .NET Framework; V20 also ships a .NET 5+ capable
+         API surface, but net48 is the safest common denominator across Portal versions. -->
+    <TargetFramework>net48</TargetFramework>
+    <Platforms>x64</Platforms>
+    <PlatformTarget>x64</PlatformTarget>
+    <RootNamespace>TiaOpennessBuilder</RootNamespace>
+    <AssemblyName>TiaOpennessBuilder</AssemblyName>
+    <LangVersion>latest</LangVersion>
+    <Nullable>disable</Nullable>
+
+    <!-- Override with: dotnet build -p:TiaPortalInstallDir="D:\Siemens\Portal V20" -->
+    <TiaPortalInstallDir Condition="'$(TiaPortalInstallDir)' == ''">C:\Program Files\Siemens\Automation\Portal V20</TiaPortalInstallDir>
+    <TiaPortalApiVersion Condition="'$(TiaPortalApiVersion)' == ''">V20</TiaPortalApiVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- These DLLs ship with TIA Portal itself (Openness option must be installed)
+         and are NOT redistributed in this repo. Point TiaPortalInstallDir at your
+         local installation. Typical path:
+         C:\Program Files\Siemens\Automation\Portal V20\PublicAPI\V20\Siemens.Engineering.dll -->
+    <Reference Include="Siemens.Engineering">
+      <HintPath>$(TiaPortalInstallDir)\PublicAPI\$(TiaPortalApiVersion)\Siemens.Engineering.dll</HintPath>
+      <Private>False</Private>
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="Siemens.Engineering.Hmi">
+      <HintPath>$(TiaPortalInstallDir)\PublicAPI\$(TiaPortalApiVersion)\Siemens.Engineering.Hmi.dll</HintPath>
+      <Private>False</Private>
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Needed for the `dynamic` HMI software handle in HmiScreenBuilder,
+         since the concrete Comfort vs. Unified software type differs. -->
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\project-config.sample.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+</Project>
