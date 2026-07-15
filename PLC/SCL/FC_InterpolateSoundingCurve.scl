@@ -8,7 +8,7 @@ VAR_INPUT
     SoundingCm : Real;
 END_VAR
 
-VAR
+VAR_TEMP
     i : Int;
     t : Real;
 END_VAR
