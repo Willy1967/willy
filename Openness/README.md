@@ -35,11 +35,15 @@ Kopieer `project-config.sample.json` en pas aan:
 
 - `CreateNewProject` / `TiaProjectDirectory` / `TiaProjectName` voor een
   nieuw project, of `TiaProjectPath` om een bestaand `.ap20`-project te openen.
-- `PlcOrderNumber` — exacte catalogusstring van je CPU, bv.
+- `PlcOrderNumber` — exacte catalogusstring van je S7-1500 CPU, bv.
   `"OrderNumber:6ES7 515-2AM02-0AB0/V3.0"`. Zoek de exacte string op via
   Hardwarecatalogus in TIA Portal (rechtsklik → "Properties" op een CPU) of
-  in de HSP-documentatie.
-- `HmiOrderNumber` — idem voor het HMI-paneel (TP1200 Comfort of Unified).
+  in de HSP-documentatie — pas aan naar jouw exacte CPU-type/firmwareversie.
+- `HmiOrderNumber` — voor de MTP1200 (SIMATIC HMI Unified Comfort Panel 12″),
+  standaard `"OrderNumber:6AV2128-3XB06-0AX1"`. **Controleer dit tegen de
+  Hardwarecatalogus in jouw TIA Portal V20** (Unified Comfort Panels hebben
+  meerdere varianten/revisies) voordat je het script tegen een echt project
+  draait — een onjuiste catalogusstring laat `CreateWithItem` falen.
 - `SclSourceDirectory` + `SclImportOrder` — de SCL-bestanden uit `PLC/SCL`
   die in deze volgorde geïmporteerd worden (UDT's vóór de FB's die ze
   gebruiken). `DB_Tanks` staat hier bewust *niet* in: die wordt dynamisch
