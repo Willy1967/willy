@@ -55,6 +55,19 @@ namespace TiaOpennessBuilder.Builders
             // Comfort Panels): Screens sits directly on the HMI software, no
             // ScreenFolder wrapper like some Comfort/Advanced APIs use.
             dynamic screens = hmiTarget.Screens;
+            DescribeMembers("Screens composition", (object)screens);
+
+            dynamic firstScreen = null;
+            foreach (dynamic s in screens)
+            {
+                firstScreen = s;
+                break;
+            }
+
+            if (firstScreen != null)
+            {
+                DescribeMembers("An existing Screen instance", (object)firstScreen);
+            }
 
             foreach (var tank in config.Tanks)
             {
@@ -74,6 +87,22 @@ namespace TiaOpennessBuilder.Builders
                 {
                     Console.WriteLine($"  Could not create HMI screen '{screenName}': {ex.Message}");
                 }
+            }
+        }
+
+        private static void DescribeMembers(string label, object instance)
+        {
+            var type = instance.GetType();
+            Console.WriteLine($"{label}: {type.FullName}");
+            foreach (var m in type.GetMethods())
+            {
+                if (m.DeclaringType == typeof(object) || m.IsSpecialName)
+                {
+                    continue;
+                }
+
+                var ps = string.Join(", ", Array.ConvertAll(m.GetParameters(), p => $"{p.ParameterType.Name} {p.Name}"));
+                Console.WriteLine($"    {m.ReturnType.Name} {m.Name}({ps})");
             }
         }
 
