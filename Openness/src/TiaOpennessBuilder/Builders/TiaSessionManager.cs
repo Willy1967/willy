@@ -41,6 +41,12 @@ namespace TiaOpennessBuilder.Builders
 
         public PlcSoftware GetOrCreatePlcSoftware(string orderNumber, string deviceName)
         {
+            Console.WriteLine("Devices found in project:");
+            foreach (Device d in Project.Devices)
+            {
+                Console.WriteLine($"  - '{d.Name}'");
+            }
+
             var device = FindDevice(deviceName) ?? Project.Devices.CreateWithItem(orderNumber, deviceName, deviceName);
 
             foreach (DeviceItem item in device.DeviceItems)
