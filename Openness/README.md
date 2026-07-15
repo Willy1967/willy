@@ -58,8 +58,11 @@ Kopieer `project-config.sample.json` en pas aan:
 ```
 cd Openness/src/TiaOpennessBuilder
 dotnet build -c Release
-dotnet bin\Release\net48\TiaOpennessBuilder.dll ..\..\project-config.json
+.\bin\Release\net48\TiaOpennessBuilder.exe ..\..\project-config.json
 ```
+
+net48 is klassiek .NET Framework: de `.exe` wordt rechtstreeks uitgevoerd, niet via
+`dotnet <dll>` (dat is alleen voor .NET-Core/.NET-5+ assemblies).
 
 Het script is idempotent voor de PLC-kant: opnieuw draaien importeert de
 bronnen opnieuw (bestaande external sources met dezelfde naam worden eerst
