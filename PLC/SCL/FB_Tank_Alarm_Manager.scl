@@ -23,7 +23,11 @@ BEGIN
     // Kanaalindeling: 1=HH 2=H 3=L 4=LL 5=SensorFailure 6=Spare1 7=Spare2
     FOR #i := 1 TO 7 DO
         IF #i = 5 THEN
-            #ProcessValue := BOOL_TO_REAL(#SensorFailure);
+            IF #SensorFailure THEN
+                #ProcessValue := 1.0;
+            ELSE
+                #ProcessValue := 0.0;
+            END_IF;
         ELSE
             #ProcessValue := #LevelPercent;
         END_IF;
