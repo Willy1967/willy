@@ -9,15 +9,15 @@ namespace TiaOpennessBuilder.Builders
     /// <summary>
     /// Best-effort HMI automation.
     ///
-    /// IMPORTANT LIMITATION: the public Openness API exposes far less of the
-    /// HMI object model than the PLC side, and the exact screen-object model
-    /// (property/method names for the screen collection) differs across TIA
-    /// versions and Comfort vs. Unified panels. This class deliberately uses
-    /// `dynamic` for the screen collection instead of a hard-coded type/method
-    /// name, so a wrong guess fails at runtime (caught and reported per tank)
-    /// instead of blocking the whole build. Confirm the real members via
-    /// IntelliSense against your installed Siemens.Engineering.Hmi.dll before
-    /// relying on this, or build the screens by hand as a starting point.
+    /// CONFIRMED LIMITATION (via reflection against a real Unified Comfort
+    /// Panel project): Siemens.Engineering.HmiUnified.UI.Screens.HmiScreenComposition
+    /// only exposes Create/Find/Contains/IndexOf — no Import or Export.
+    /// HmiScreen itself only exposes Delete/ResizeScreen and generic
+    /// Get/SetAttribute (screen-level attributes like size/background), with
+    /// no way to add child graphic objects (Bar, IO Field, Rectangle, …) or
+    /// import a screen's content from XML. So this class can only create or
+    /// delete empty screens; all actual screen content has to be built by
+    /// hand in the WinCC Unified screen editor.
     /// </summary>
     public static class HmiScreenBuilder
     {
@@ -55,19 +55,6 @@ namespace TiaOpennessBuilder.Builders
             // Comfort Panels): Screens sits directly on the HMI software, no
             // ScreenFolder wrapper like some Comfort/Advanced APIs use.
             dynamic screens = hmiTarget.Screens;
-            DescribeMembers("Screens composition", (object)screens);
-
-            dynamic firstScreen = null;
-            foreach (dynamic s in screens)
-            {
-                firstScreen = s;
-                break;
-            }
-
-            if (firstScreen != null)
-            {
-                DescribeMembers("An existing Screen instance", (object)firstScreen);
-            }
 
             foreach (var tank in config.Tanks)
             {
@@ -87,22 +74,6 @@ namespace TiaOpennessBuilder.Builders
                 {
                     Console.WriteLine($"  Could not create HMI screen '{screenName}': {ex.Message}");
                 }
-            }
-        }
-
-        private static void DescribeMembers(string label, object instance)
-        {
-            var type = instance.GetType();
-            Console.WriteLine($"{label}: {type.FullName}");
-            foreach (var m in type.GetMethods())
-            {
-                if (m.DeclaringType == typeof(object) || m.IsSpecialName)
-                {
-                    continue;
-                }
-
-                var ps = string.Join(", ", Array.ConvertAll(m.GetParameters(), p => $"{p.ParameterType.Name} {p.Name}"));
-                Console.WriteLine($"    {m.ReturnType.Name} {m.Name}({ps})");
             }
         }
 
