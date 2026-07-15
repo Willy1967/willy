@@ -2,7 +2,6 @@ using System;
 using Siemens.Engineering;
 using Siemens.Engineering.HW;
 using Siemens.Engineering.HW.Features;
-using Siemens.Engineering.Hmi.Screen;
 using TiaOpennessBuilder.Config;
 
 namespace TiaOpennessBuilder.Builders
@@ -11,17 +10,14 @@ namespace TiaOpennessBuilder.Builders
     /// Best-effort HMI automation.
     ///
     /// IMPORTANT LIMITATION: the public Openness API exposes far less of the
-    /// HMI object model than the PLC side. Creating/renaming screens and
-    /// screen folders is supported, but placing and dynamizing individual
-    /// graphic objects (IO fields, the tank-level gauge, HH/H/L/LL markers,
-    /// faceplate instances) is generally NOT exposed for WinCC
-    /// Comfort/Advanced, and only partially available for WinCC Unified.
-    ///
-    /// This builder therefore only creates one empty screen per tank (if it
-    /// doesn't already exist). Build the actual screen content once by hand
-    /// (or as a library master copy / screen template) and either copy it
-    /// manually per tank, or extend this class after confirming which
-    /// Hmi.Screen APIs your installed Openness version actually exposes.
+    /// HMI object model than the PLC side, and the exact screen-object model
+    /// (property/method names for the screen collection) differs across TIA
+    /// versions and Comfort vs. Unified panels. This class deliberately uses
+    /// `dynamic` for the screen collection instead of a hard-coded type/method
+    /// name, so a wrong guess fails at runtime (caught and reported per tank)
+    /// instead of blocking the whole build. Confirm the real members via
+    /// IntelliSense against your installed Siemens.Engineering.Hmi.dll before
+    /// relying on this, or build the screens by hand as a starting point.
     /// </summary>
     public static class HmiScreenBuilder
     {
@@ -55,18 +51,19 @@ namespace TiaOpennessBuilder.Builders
 
         public static void EnsureTankScreens(dynamic hmiTarget, ProjectConfig config)
         {
-            ScreenComposition screens = hmiTarget.ScreenFolder.Screens;
+            dynamic screens = hmiTarget.ScreenFolder.Screens;
 
             foreach (var tank in config.Tanks)
             {
                 var screenName = $"Tank{tank.Index}_Overview";
-                if (ScreenExists(screens, screenName))
-                {
-                    continue;
-                }
 
                 try
                 {
+                    if (ScreenExists(screens, screenName))
+                    {
+                        continue;
+                    }
+
                     screens.Create(screenName);
                     Console.WriteLine($"  Created empty HMI screen '{screenName}' — add the tank gauge/faceplate and tag bindings by hand.");
                 }
@@ -77,9 +74,9 @@ namespace TiaOpennessBuilder.Builders
             }
         }
 
-        private static bool ScreenExists(ScreenComposition screens, string name)
+        private static bool ScreenExists(dynamic screens, string name)
         {
-            foreach (Screen s in screens)
+            foreach (dynamic s in screens)
             {
                 if (s.Name == name)
                 {
