@@ -16,7 +16,11 @@ namespace TiaOpennessBuilder.Builders
     {
         public static void ImportAndGenerate(PlcSoftware plcSoftware, string sourceFilePath)
         {
-            var name = Path.GetFileNameWithoutExtension(sourceFilePath);
+            // Keep the .scl extension: TIA Portal appears to use it to
+            // recognize the source content type. A bare, extension-less
+            // name made CreateFromFile fail with a generic
+            // "method is not supported by the current version" error.
+            var name = Path.GetFileName(sourceFilePath);
             var externalSources = plcSoftware.ExternalSourceGroup.ExternalSources;
 
             // Re-importing under the same name keeps the workflow idempotent
