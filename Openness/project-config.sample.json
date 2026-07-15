@@ -1,4 +1,5 @@
 {
+  "AttachToRunningInstance": false,
   "CreateNewProject": true,
   "TiaProjectDirectory": "C:\\TIA_Projects\\TankSystem",
   "TiaProjectName": "TankSystem",

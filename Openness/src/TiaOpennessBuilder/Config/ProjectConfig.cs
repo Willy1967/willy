@@ -5,6 +5,7 @@ namespace TiaOpennessBuilder.Config
     public sealed class ProjectConfig
     {
         // Project
+        public bool AttachToRunningInstance { get; set; }
         public bool CreateNewProject { get; set; }
         public string TiaProjectPath { get; set; }
         public string TiaProjectDirectory { get; set; }

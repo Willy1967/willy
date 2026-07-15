@@ -25,9 +25,13 @@ namespace TiaOpennessBuilder
                 return 1;
             }
 
-            using var session = new TiaSessionManager(config.WithUserInterface);
+            using var session = config.AttachToRunningInstance
+                ? TiaSessionManager.AttachToRunning()
+                : new TiaSessionManager(config.WithUserInterface);
 
-            Console.WriteLine("Opening/creating TIA Portal project...");
+            Console.WriteLine(config.AttachToRunningInstance
+                ? "Attaching to running TIA Portal instance..."
+                : "Opening/creating TIA Portal project...");
             session.OpenOrCreateProject(config);
 
             var plcSoftware = session.GetOrCreatePlcSoftware(config.PlcOrderNumber, config.PlcDeviceName);

@@ -33,6 +33,15 @@ loslaat, en run eerst tegen een wegwerp-testproject.
 
 Kopieer `project-config.sample.json` en pas aan:
 
+- `AttachToRunningInstance` — zet op `true` om je **al open** TIA Portal
+  (met het project geladen) te hergebruiken in plaats van er zelf een
+  nieuwe kopie van te openen. Je hoeft het project dan niet meer te sluiten
+  voor elke run. Vereist wel dat TIA Portal al open staat mét het project
+  geladen vóór je het script start; `CreateNewProject`/`TiaProjectPath`
+  worden in dat geval genegeerd (alleen `TiaProjectName` wordt gebruikt om
+  het juiste open project te vinden als er meerdere open staan). Staat dit
+  op `false` (standaard), dan opent het script zelf een verse kopie van het
+  project en moet dat project dus gesloten zijn in de GUI.
 - `CreateNewProject` / `TiaProjectDirectory` / `TiaProjectName` voor een
   nieuw project, of `TiaProjectPath` om een bestaand `.ap20`-project te openen.
 - `PlcOrderNumber` — exacte catalogusstring van je S7-1500 CPU, bv.
