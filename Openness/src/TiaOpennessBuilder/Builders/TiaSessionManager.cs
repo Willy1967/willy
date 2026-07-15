@@ -71,6 +71,18 @@ namespace TiaOpennessBuilder.Builders
                 {
                     return d;
                 }
+
+                // The station (Device) name and the CPU/HMI module's own name
+                // (DeviceItem) can differ, e.g. a station called
+                // "S7-1500/ET200MP station_1" containing a CPU item named
+                // "PLC_1". Match on either.
+                foreach (DeviceItem item in d.DeviceItems)
+                {
+                    if (string.Equals(item.Name, name, StringComparison.OrdinalIgnoreCase))
+                    {
+                        return d;
+                    }
+                }
             }
 
             return null;
