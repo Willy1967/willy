@@ -12,6 +12,7 @@
   "HmiOrderNumber": "OrderNumber:6AV2128-3XB06-0AX1",
   "HmiDeviceName": "HMI_1",
 
+  "ImportPlcSources": true,
   "SclSourceDirectory": "..\\..\\..\\PLC\\SCL",
   "SclImportOrder": [
     "UDT_Alarm.scl",

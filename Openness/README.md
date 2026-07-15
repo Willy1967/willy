@@ -70,6 +70,15 @@ verwijderd) en slaat het project op.
 
 ## Bekende beperkingen
 
+- **`PlcExternalSourceComposition.CreateFromFile` is op minstens één getest
+  systeem geblokkeerd** met `"The method is not supported by the current
+  version"`, zelfs met correcte SCL-inhoud en een correcte projectstatus.
+  Waarschijnlijk een licentie-/editiebeperking op scriptend schrijven naar
+  external sources (bevestigd doordat exact dezelfde actie via de TIA
+  Portal-GUI — Add new external file → Generate blocks from source — wél
+  altijd werkte). Zet in dat geval `"ImportPlcSources": false` in je config
+  en importeer de bestanden uit `PLC/SCL` handmatig via de GUI; het script
+  doet dan alleen nog de tag-tabel en (optioneel) de HMI-schermen.
 - **HMI-schermen**: de publieke Openness API biedt voor WinCC Comfort/Advanced
   nauwelijks toegang tot losse grafische objecten (IO-fields, de
   tankniveau-gauge, HH/H/L/LL-markers, faceplate-instanties). `HmiScreenBuilder`

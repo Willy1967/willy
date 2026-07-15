@@ -32,19 +32,26 @@ namespace TiaOpennessBuilder
 
             var plcSoftware = session.GetOrCreatePlcSoftware(config.PlcOrderNumber, config.PlcDeviceName);
 
-            Console.WriteLine("Importing SCL sources (UDTs and function blocks)...");
-            foreach (var fileName in config.SclImportOrder)
+            if (config.ImportPlcSources)
             {
-                var path = Path.Combine(config.SclSourceDirectory, fileName);
-                Console.WriteLine($"  -> {fileName}");
-                SourceImporter.ImportAndGenerate(plcSoftware, path);
-            }
+                Console.WriteLine("Importing SCL sources (UDTs and function blocks)...");
+                foreach (var fileName in config.SclImportOrder)
+                {
+                    var path = Path.Combine(config.SclSourceDirectory, fileName);
+                    Console.WriteLine($"  -> {fileName}");
+                    SourceImporter.ImportAndGenerate(plcSoftware, path);
+                }
 
-            Console.WriteLine("Generating DB_Tanks from config and importing...");
-            var tempDir = Path.Combine(Path.GetTempPath(), "TiaOpennessBuilder");
-            Directory.CreateDirectory(tempDir);
-            var dbTanksSource = TankDbGenerator.GenerateDbTanksSource(config, tempDir);
-            SourceImporter.ImportAndGenerate(plcSoftware, dbTanksSource);
+                Console.WriteLine("Generating DB_Tanks from config and importing...");
+                var tempDir = Path.Combine(Path.GetTempPath(), "TiaOpennessBuilder");
+                Directory.CreateDirectory(tempDir);
+                var dbTanksSource = TankDbGenerator.GenerateDbTanksSource(config, tempDir);
+                SourceImporter.ImportAndGenerate(plcSoftware, dbTanksSource);
+            }
+            else
+            {
+                Console.WriteLine("Skipping SCL/DB_Tanks import (ImportPlcSources = false) — assuming these were already imported by hand.");
+            }
 
             Console.WriteLine("Building PLC tag tables...");
             PlcTagTableBuilder.BuildTankTags(plcSoftware, config);

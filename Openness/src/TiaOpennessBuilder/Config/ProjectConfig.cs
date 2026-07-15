@@ -21,6 +21,7 @@ namespace TiaOpennessBuilder.Config
         public string HmiDeviceName { get; set; } = "HMI_1";
 
         // SCL sources
+        public bool ImportPlcSources { get; set; } = true;
         public string SclSourceDirectory { get; set; }
         public List<string> SclImportOrder { get; set; } = new List<string>();
 
