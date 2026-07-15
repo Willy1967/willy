@@ -53,8 +53,15 @@ namespace TiaOpennessBuilder
                 Console.WriteLine("Skipping SCL/DB_Tanks import (ImportPlcSources = false) — assuming these were already imported by hand.");
             }
 
-            Console.WriteLine("Building PLC tag tables...");
-            PlcTagTableBuilder.BuildTankTags(plcSoftware, config);
+            if (config.BuildTagTables)
+            {
+                Console.WriteLine("Building PLC tag tables...");
+                PlcTagTableBuilder.BuildTankTags(plcSoftware, config);
+            }
+            else
+            {
+                Console.WriteLine("Skipping PLC tag tables (BuildTagTables = false).");
+            }
 
             if (config.BuildHmiScreens && !string.IsNullOrWhiteSpace(config.HmiDeviceName))
             {

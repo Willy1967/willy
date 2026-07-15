@@ -15,6 +15,9 @@ namespace TiaOpennessBuilder.Config
         public string PlcOrderNumber { get; set; }
         public string PlcDeviceName { get; set; } = "PLC_1";
 
+        // PLC tags
+        public bool BuildTagTables { get; set; } = true;
+
         // HMI (optional)
         public bool BuildHmiScreens { get; set; }
         public string HmiOrderNumber { get; set; }
