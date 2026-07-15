@@ -8,5 +8,50 @@ VAR
 END_VAR
 
 BEGIN
+    // Values below mirror Openness/project-config.sample.json — regenerate
+    // by hand here (or via the Openness tool once available) if you change
+    // tank names, addresses, or setpoints in that config.
+
+    Tank[1].TankName := 'MGO_Port';
+    Tank[1].Alarms[1].Enabled := TRUE; Tank[1].Alarms[1].IsHighAlarm := TRUE;  Tank[1].Alarms[1].Setpoint := 95.0; Tank[1].Alarms[1].Hysteresis := 1.0; Tank[1].Alarms[1].DelayTime := T#3S;
+    Tank[1].Alarms[2].Enabled := TRUE; Tank[1].Alarms[2].IsHighAlarm := TRUE;  Tank[1].Alarms[2].Setpoint := 85.0; Tank[1].Alarms[2].Hysteresis := 1.0; Tank[1].Alarms[2].DelayTime := T#3S;
+    Tank[1].Alarms[3].Enabled := TRUE; Tank[1].Alarms[3].IsHighAlarm := FALSE; Tank[1].Alarms[3].Setpoint := 15.0; Tank[1].Alarms[3].Hysteresis := 1.0; Tank[1].Alarms[3].DelayTime := T#3S;
+    Tank[1].Alarms[4].Enabled := TRUE; Tank[1].Alarms[4].IsHighAlarm := FALSE; Tank[1].Alarms[4].Setpoint := 5.0;  Tank[1].Alarms[4].Hysteresis := 1.0; Tank[1].Alarms[4].DelayTime := T#3S;
+    Tank[1].Alarms[5].Enabled := TRUE; Tank[1].Alarms[5].IsHighAlarm := TRUE;  Tank[1].Alarms[5].Setpoint := 0.5;  Tank[1].Alarms[5].Hysteresis := 0.1; Tank[1].Alarms[5].DelayTime := T#10S;
+
+    Tank[2].TankName := 'MGO_Stbd';
+    Tank[2].Alarms[1].Enabled := TRUE; Tank[2].Alarms[1].IsHighAlarm := TRUE;  Tank[2].Alarms[1].Setpoint := 95.0; Tank[2].Alarms[1].Hysteresis := 1.0; Tank[2].Alarms[1].DelayTime := T#3S;
+    Tank[2].Alarms[2].Enabled := TRUE; Tank[2].Alarms[2].IsHighAlarm := TRUE;  Tank[2].Alarms[2].Setpoint := 85.0; Tank[2].Alarms[2].Hysteresis := 1.0; Tank[2].Alarms[2].DelayTime := T#3S;
+    Tank[2].Alarms[3].Enabled := TRUE; Tank[2].Alarms[3].IsHighAlarm := FALSE; Tank[2].Alarms[3].Setpoint := 15.0; Tank[2].Alarms[3].Hysteresis := 1.0; Tank[2].Alarms[3].DelayTime := T#3S;
+    Tank[2].Alarms[4].Enabled := TRUE; Tank[2].Alarms[4].IsHighAlarm := FALSE; Tank[2].Alarms[4].Setpoint := 5.0;  Tank[2].Alarms[4].Hysteresis := 1.0; Tank[2].Alarms[4].DelayTime := T#3S;
+    Tank[2].Alarms[5].Enabled := TRUE; Tank[2].Alarms[5].IsHighAlarm := TRUE;  Tank[2].Alarms[5].Setpoint := 0.5;  Tank[2].Alarms[5].Hysteresis := 0.1; Tank[2].Alarms[5].DelayTime := T#10S;
+
+    Tank[3].TankName := 'MGO_Day';
+    Tank[3].Alarms[1].Enabled := TRUE; Tank[3].Alarms[1].IsHighAlarm := TRUE;  Tank[3].Alarms[1].Setpoint := 95.0; Tank[3].Alarms[1].Hysteresis := 1.0; Tank[3].Alarms[1].DelayTime := T#3S;
+    Tank[3].Alarms[2].Enabled := TRUE; Tank[3].Alarms[2].IsHighAlarm := TRUE;  Tank[3].Alarms[2].Setpoint := 85.0; Tank[3].Alarms[2].Hysteresis := 1.0; Tank[3].Alarms[2].DelayTime := T#3S;
+    Tank[3].Alarms[3].Enabled := TRUE; Tank[3].Alarms[3].IsHighAlarm := FALSE; Tank[3].Alarms[3].Setpoint := 20.0; Tank[3].Alarms[3].Hysteresis := 1.0; Tank[3].Alarms[3].DelayTime := T#3S;
+    Tank[3].Alarms[4].Enabled := TRUE; Tank[3].Alarms[4].IsHighAlarm := FALSE; Tank[3].Alarms[4].Setpoint := 10.0; Tank[3].Alarms[4].Hysteresis := 1.0; Tank[3].Alarms[4].DelayTime := T#3S;
+    Tank[3].Alarms[5].Enabled := TRUE; Tank[3].Alarms[5].IsHighAlarm := TRUE;  Tank[3].Alarms[5].Setpoint := 0.5;  Tank[3].Alarms[5].Hysteresis := 0.1; Tank[3].Alarms[5].DelayTime := T#10S;
+
+    Tank[4].TankName := 'FW_Port';
+    Tank[4].Alarms[1].Enabled := TRUE; Tank[4].Alarms[1].IsHighAlarm := TRUE;  Tank[4].Alarms[1].Setpoint := 95.0; Tank[4].Alarms[1].Hysteresis := 1.0; Tank[4].Alarms[1].DelayTime := T#3S;
+    Tank[4].Alarms[2].Enabled := TRUE; Tank[4].Alarms[2].IsHighAlarm := TRUE;  Tank[4].Alarms[2].Setpoint := 85.0; Tank[4].Alarms[2].Hysteresis := 1.0; Tank[4].Alarms[2].DelayTime := T#3S;
+    Tank[4].Alarms[3].Enabled := TRUE; Tank[4].Alarms[3].IsHighAlarm := FALSE; Tank[4].Alarms[3].Setpoint := 15.0; Tank[4].Alarms[3].Hysteresis := 1.0; Tank[4].Alarms[3].DelayTime := T#3S;
+    Tank[4].Alarms[4].Enabled := TRUE; Tank[4].Alarms[4].IsHighAlarm := FALSE; Tank[4].Alarms[4].Setpoint := 5.0;  Tank[4].Alarms[4].Hysteresis := 1.0; Tank[4].Alarms[4].DelayTime := T#3S;
+    Tank[4].Alarms[5].Enabled := TRUE; Tank[4].Alarms[5].IsHighAlarm := TRUE;  Tank[4].Alarms[5].Setpoint := 0.5;  Tank[4].Alarms[5].Hysteresis := 0.1; Tank[4].Alarms[5].DelayTime := T#10S;
+
+    Tank[5].TankName := 'FW_Stbd';
+    Tank[5].Alarms[1].Enabled := TRUE; Tank[5].Alarms[1].IsHighAlarm := TRUE;  Tank[5].Alarms[1].Setpoint := 95.0; Tank[5].Alarms[1].Hysteresis := 1.0; Tank[5].Alarms[1].DelayTime := T#3S;
+    Tank[5].Alarms[2].Enabled := TRUE; Tank[5].Alarms[2].IsHighAlarm := TRUE;  Tank[5].Alarms[2].Setpoint := 85.0; Tank[5].Alarms[2].Hysteresis := 1.0; Tank[5].Alarms[2].DelayTime := T#3S;
+    Tank[5].Alarms[3].Enabled := TRUE; Tank[5].Alarms[3].IsHighAlarm := FALSE; Tank[5].Alarms[3].Setpoint := 15.0; Tank[5].Alarms[3].Hysteresis := 1.0; Tank[5].Alarms[3].DelayTime := T#3S;
+    Tank[5].Alarms[4].Enabled := TRUE; Tank[5].Alarms[4].IsHighAlarm := FALSE; Tank[5].Alarms[4].Setpoint := 5.0;  Tank[5].Alarms[4].Hysteresis := 1.0; Tank[5].Alarms[4].DelayTime := T#3S;
+    Tank[5].Alarms[5].Enabled := TRUE; Tank[5].Alarms[5].IsHighAlarm := TRUE;  Tank[5].Alarms[5].Setpoint := 0.5;  Tank[5].Alarms[5].Hysteresis := 0.1; Tank[5].Alarms[5].DelayTime := T#10S;
+
+    Tank[6].TankName := 'FW_Hydrophore';
+    Tank[6].Alarms[1].Enabled := TRUE; Tank[6].Alarms[1].IsHighAlarm := TRUE;  Tank[6].Alarms[1].Setpoint := 95.0; Tank[6].Alarms[1].Hysteresis := 1.0; Tank[6].Alarms[1].DelayTime := T#3S;
+    Tank[6].Alarms[2].Enabled := TRUE; Tank[6].Alarms[2].IsHighAlarm := TRUE;  Tank[6].Alarms[2].Setpoint := 85.0; Tank[6].Alarms[2].Hysteresis := 1.0; Tank[6].Alarms[2].DelayTime := T#3S;
+    Tank[6].Alarms[3].Enabled := TRUE; Tank[6].Alarms[3].IsHighAlarm := FALSE; Tank[6].Alarms[3].Setpoint := 20.0; Tank[6].Alarms[3].Hysteresis := 1.0; Tank[6].Alarms[3].DelayTime := T#3S;
+    Tank[6].Alarms[4].Enabled := TRUE; Tank[6].Alarms[4].IsHighAlarm := FALSE; Tank[6].Alarms[4].Setpoint := 10.0; Tank[6].Alarms[4].Hysteresis := 1.0; Tank[6].Alarms[4].DelayTime := T#3S;
+    Tank[6].Alarms[5].Enabled := TRUE; Tank[6].Alarms[5].IsHighAlarm := TRUE;  Tank[6].Alarms[5].Setpoint := 0.5;  Tank[6].Alarms[5].Hysteresis := 0.1; Tank[6].Alarms[5].DelayTime := T#10S;
 
 END_DATA_BLOCK
